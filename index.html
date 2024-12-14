@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Visual Risk</title>
+    <style>
+        @font-face {
+            font-family: 'KoPub Batang_Bold';
+            src: url('./KoPub\ Batang_Pro\ Bold.otf') format('opentype');
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            overflow: hidden;
+            font-family: 'KoPub Batang_Bold';
+            transform : rotate(0.04deg); 
+        }
+
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);  /* 5x5에서 8x8로 증가 */
+            grid-template-rows: repeat(8, 1fr);
+            gap: 10px;  /* 그리드 간격 추가 */
+            padding: 10px;  /* 전체 패딩 추가 */
+        }
+
+        .grid-item {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s ease;
+        }
+
+        .grid-item img {
+            width: 15%;  /* 25%에서 15%로 감소 */
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .container {
+            position: relative;
+            width: 800px;
+            height: 800px;
+            z-index: 2;
+        }
+
+        .circular-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            animation: rotate 20s linear infinite;
+            transform-origin: center center;
+        }
+
+        .text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            font-size: 3vh;
+            color: black;
+        }
+
+        .text span {
+            position: absolute;
+            left: 50%;
+            transform-origin: 0 400px;
+            display: inline-block;
+        }
+
+        .image-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+        }
+
+        .image-top {
+            z-index: 2;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-55%, -30%);
+            width: 25%;
+            height: 25%;
+            object-fit: cover;
+        }
+
+        .image-bottom {
+            z-index: 1;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            height: 50%;
+            object-fit: contain;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        
+
+        .image-container:hover .image-bottom {
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 기존 CSS 맨 아래에 추가 */
+@media screen and (max-width: 844px) {
+    .container {
+        width: 90vmin;
+        height: 90vmin;
+    }
+
+    .grid-background {
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+        gap: 5px;
+    }
+
+    .grid-item img {
+        width: 12%;
+    }
+
+    .text {
+        font-size: 2vh;
+    }
+
+    .text span {
+        transform-origin: 0 45vmin;
+    }
+
+    .image-top {
+        width: 20%;
+        height: 20%;
+    }
+
+    .image-bottom {
+        width: 40%;
+        height: 40%;
+    }
+
+    .image-container:hover .image-bottom {
+        transform: translate(-50%, -50%) scale(1.3);
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="grid-background" id="gridBackground"></div>
+    <div class="container">
+        <div class="circular-text">
+            <div class="text" id="text"></div>
+        </div>
+        <div class="image-container" id="centerImage">
+            <img src="/Top.png" alt="Top Image" class="image-top">
+            <img src="/Bottom.png" alt="Bottom Image" class="image-bottom">
+        </div>
+    </div>
+
+    <script>
+        const text = "비주얼리스크: 텍스트는 가장 날카로운 검, 이미지는 가장 견고한 방패. ";
+        const textContainer = document.getElementById('text');
+        
+        // 원형 텍스트 생성
+        for (let i = 0; i < text.length; i++) {
+            const span = document.createElement('span');
+            span.textContent = text[i];
+            span.style.transform = `rotate(${i * 360 / text.length}deg)`;
+            textContainer.appendChild(span);
+        }
+
+        // 그리드 이미지 생성
+        const gridContainer = document.getElementById('gridBackground');
+        const centerImage = document.getElementById('centerImage');
+        
+        // 5x5 그리드 생성
+        // 8x8 그리드 생성
+        for (let i = 0; i < 128; i++) {
+    const gridItem = document.createElement('div');
+    gridItem.className = 'grid-item';
+    const img = document.createElement('img');
+    img.src = '/Sword.png';
+    img.alt = 'Grid Image';
+    img.style.transform = `rotate(${getRandomRotation()}deg)`; // 초기 회전 적용
+    gridItem.appendChild(img);
+    gridContainer.appendChild(gridItem);
+}
+
+function getRandomRotation() {
+    // 단순히 0-360 사이의 랜덤한 각도 반환
+    return Math.random() * 360;
+}
+
+// 그리드 아이템 생성 함수 수정
+function createGridItem(imgSrc, size = 'medium') {
+    const gridItem = document.createElement('div');
+    gridItem.className = `grid-item ${size}`;
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.alt = 'Grid Image';
+    
+    // 초기에 랜덤한 각도로 회전
+    img.style.transform = `rotate(${getRandomRotation()}deg)`;
+    
+    gridItem.appendChild(img);
+    return gridItem;
+}
+
+// 중앙을 향한 회전 계산 함수 수정 (상단이 중앙을 향하도록)
+function calculateRotation(element) {
+    const rect = element.getBoundingClientRect();
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    const elementX = rect.left + rect.width / 2;
+    const elementY = rect.top + rect.height / 2;
+    
+    // 상단이 중앙을 향하도록 +90도로 수정
+    return Math.atan2(centerY - elementY, centerX - elementX) * (180 / Math.PI) + 90;
+}
+
+// 호버 이벤트 처리
+centerImage.addEventListener('mouseenter', () => {
+    const gridItems = document.querySelectorAll('.grid-item img');
+    gridItems.forEach(item => {
+        const angle = calculateRotation(item);
+        item.style.transform = `rotate(${angle}deg)`;
+    });
+});
+
+// 호버 해제시 다시 랜덤한 각도로
+centerImage.addEventListener('mouseleave', () => {
+    const gridItems = document.querySelectorAll('.grid-item img');
+    gridItems.forEach(item => {
+        item.style.transform = `rotate(${getRandomRotation()}deg)`;
+    });
+});
+    </script>
+</body>
+</html>
