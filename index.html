@@ -7,7 +7,7 @@
     <style>
         @font-face {
             font-family: 'KoPub Batang_Bold';
-            src: url('./KoPub\ Batang_Pro\ Bold.otf') format('opentype');
+            src: url('./Assets/KoPub\ Batang_Pro\ Bold.otf') format('opentype');
         }
 
         body {
@@ -177,8 +177,8 @@
             <div class="text" id="text"></div>
         </div>
         <div class="image-container" id="centerImage">
-            <img src="https://damagethundercat.github.io/VisualRisk/Top.png" alt="Top Image" class="image-top">
-            <img src="https://damagethundercat.github.io/VisualRisk/Bottom.png" alt="Bottom Image" class="image-bottom">
+            <img src="./Assets/Top.png" alt="Top Image" class="image-top">
+            <img src="./Assets/Bottom.png" alt="Bottom Image" class="image-bottom">
         </div>
     </div>
 
@@ -204,7 +204,7 @@
     const gridItem = document.createElement('div');
     gridItem.className = 'grid-item';
     const img = document.createElement('img');
-    img.src = 'https://github.com/damagethundercat/VisualRisk.git/Sword.png';
+    img.src = './Assets/Sword.png';
     img.alt = 'Grid Image';
     img.style.transform = `rotate(${getRandomRotation()}deg)`; // 초기 회전 적용
     gridItem.appendChild(img);

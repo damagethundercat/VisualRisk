@@ -1,2 +1,0 @@
-# VisualRisk
-VisualRisk
